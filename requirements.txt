@@ -1,0 +1,4 @@
+flask==3.0.3
+gdown==5.1.0
+numpy==1.26.4
+lib-ml @ git+https://github.com/REMLA24-Team-5/lib-ml@v0.1.0
