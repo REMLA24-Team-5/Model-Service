@@ -11,8 +11,8 @@ def fetch_model():
     """
     Fetches the pre-trained model from Google Drive
     """
-    model_url = "https://drive.google.com/file/d/185n3q-K-l3eiFwiThouljU_j9rYDugIX"
-    output = 'model/model.joblib'
+    model_url = "https://drive.google.com/uc?id=185n3q-K-l3eiFwiThouljU_j9rYDugIX"
+    output = 'model.joblib'
     model = load(gdown.download(model_url, output, quiet=False))
     return model
 
@@ -38,7 +38,10 @@ def predict():
         # Convert predicted probabilities to binary labels
         prediction_binary = (np.array(prediction) > 0.5).astype(int)
 
-        return jsonify({"prediction": prediction_binary.tolist()})
+        if prediction_binary == 1:
+            return jsonify({"prediction": "Phishing"})
+        else:
+            return jsonify({"prediction": "Legitimate"})
     else:
         return jsonify({"error": "No URL found in the request"})
 
