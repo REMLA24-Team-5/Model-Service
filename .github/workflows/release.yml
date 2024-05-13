@@ -30,7 +30,7 @@ jobs:
 
       - name: Build and Push Docker Image on ghcr.io/ORGA/REPO
         run: |
-          IMG=ghcr.io/remla24-team-5/${{ env.repo_name }}
+          IMG=ghcr.io/remla24-team-5/${{ env.repository }}
           docker build . \
             --tag $IMG:${{ env.version }} \
             --tag $IMG:${{ env.version_major }}.${{ env.version_minor }}.latest \
