@@ -32,7 +32,7 @@ def fetch_preprocessing():
     test = [line.strip() for line in open('data/test.txt', "r", encoding="utf-8").readlines()]
     raw_x_test = [line.split("\t")[1] for line in test]
 
-    val=[line.strip() for line in open('data/test.txt', "r", encoding="utf-8").readlines()]
+    val=[line.strip() for line in open('data/val.txt', "r", encoding="utf-8").readlines()]
     raw_x_val=[line.split("\t")[1] for line in val]
 
     preprocessor = pre_process.Preprocessing(raw_x_train, raw_y_train, raw_x_test, raw_x_val)
