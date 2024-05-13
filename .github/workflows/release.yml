@@ -5,9 +5,12 @@ on:
       - tim-docker-setup
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Parse version info from tag
         run: |
@@ -21,16 +24,18 @@ jobs:
           echo "version_minor=$MINOR" >> $GITHUB_ENV
           echo "version_patch=$PATCH" >> $GITHUB_ENV
 
-      - name: Registry Login (ghcr.io)
-        run: |
-          echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # - name: Registry Login (ghcr.io)
+      #   run: |
+      #     echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker Image on ghcr.io/ORGA/REPO
         run: |
-          IMG=ghcr.io/${{ env.repo_name }}
+          IMG=ghcr.io/remla24-team-5/${{ env.repo_name }}
           docker build . \
             --tag $IMG:${{ env.version }} \
             --tag $IMG:${{ env.version_major }}.${{ env.version_minor }}.latest \
             --tag $IMG:${{ env.version_major }}.latest \
             --tag $IMG:latest
           docker push --all-tags $IMG
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
