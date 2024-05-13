@@ -6,7 +6,9 @@ on:
 jobs:
   build:
     permissions:
-      contents: write
+      contents: read
+      packages: write
+      attestations: write
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -46,4 +48,4 @@ jobs:
             --tag $IMG:latest
           docker push --all-tags $IMG
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
