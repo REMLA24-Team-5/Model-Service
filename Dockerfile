@@ -5,4 +5,5 @@ COPY requirements.txt /root/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . .
 EXPOSE 3000
-CMD ["python", "model-service.py"]
+ENV FLASK_APP=model-service.py
+CMD ["flask", "run", "--host=0.0.0.0"]
