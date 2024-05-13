@@ -29,10 +29,6 @@ jobs:
           # echo the tag
           echo "tag=$VERSION"
 
-      # - name: Registry Login (ghcr.io)
-      #   run: |
-      #     echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -54,5 +50,3 @@ jobs:
             --tag $IMG:${{ env.version_major }}.latest \
             --tag $IMG:latest
           docker push --all-tags $IMG
-        # env:
-        #   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
