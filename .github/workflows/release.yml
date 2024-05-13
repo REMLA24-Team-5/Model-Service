@@ -8,7 +8,6 @@ jobs:
     permissions:
       contents: write
       packages: write
-      # attestations: write
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
