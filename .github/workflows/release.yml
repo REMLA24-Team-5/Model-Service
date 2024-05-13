@@ -30,7 +30,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          IMG=ghcr.io/remla24-team-5/${{ github.repository }}
+          IMG=ghcr.io/${{ github.repository }}
           docker build . \
             --tag $IMG:${{ env.version }} \
             --tag $IMG:${{ env.version_major }}.${{ env.version_minor }}.latest \
@@ -38,4 +38,4 @@ jobs:
             --tag $IMG:latest
           docker push --all-tags $IMG
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
