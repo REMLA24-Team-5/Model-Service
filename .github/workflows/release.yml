@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     permissions:
-      contents: read|write
+      contents: [read, write]
       packages: write
       attestations: write
     runs-on: ubuntu-22.04
