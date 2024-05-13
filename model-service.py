@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
-from lib_ml import Preprocessing
 import gdown
 from joblib import load
 import numpy as np
+import importlib
+pre_process = importlib.import_module('lib-ml.pre_process')
 
 app = Flask(__name__)
 
@@ -16,8 +17,31 @@ def fetch_model():
     model = load(gdown.download(model_url, output, quiet=False))
     return model
 
+def fetch_preprocessing():
+    """
+    Fetches the pre-processing module from Google Drive
+    """
+
+    gdown.download_folder('https://drive.google.com/drive/folders/1_NobSEMZS8jogSAEZ9ZLBUTemPiASJRg',
+                          output="data", quiet=False)
+    
+    train = [line.strip() for line in open('data/train.txt', "r", encoding="utf-8").readlines()[1:]]
+    raw_x_train = [line.split("\t")[1] for line in train]
+    raw_y_train = [line.split("\t")[0] for line in train]
+
+    test = [line.strip() for line in open('data/test.txt', "r", encoding="utf-8").readlines()]
+    raw_x_test = [line.split("\t")[1] for line in test]
+
+    val=[line.strip() for line in open('data/test.txt', "r", encoding="utf-8").readlines()]
+    raw_x_val=[line.split("\t")[1] for line in val]
+
+    preprocessor = pre_process.Preprocessing(raw_x_train, raw_y_train, raw_x_test, raw_x_val)
+
+    return preprocessor
+
 # Load the pre-trained model
 model = fetch_model()
+preprocessor = fetch_preprocessing()
 
 # Define a route for making predictions
 @app.route('/predict', methods=['POST'])
@@ -30,7 +54,7 @@ def predict():
 
     if url:
         # Pre-process the data using lib-ml
-        preprocessed_url = Preprocessing.process_URL(url)
+        preprocessed_url = preprocessor.process_URL(url)
 
         # Make predictions using the pre-trained model
         prediction = model.predict(preprocessed_url)
