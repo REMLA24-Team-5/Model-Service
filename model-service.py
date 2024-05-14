@@ -50,14 +50,15 @@ def predict():
     Endpoint for making predictions
     """
     # Get the URL from the request
-    url = request.json
+    url = request.json["url"]
 
     if url:
         # Pre-process the data using lib-ml
         preprocessed_url = preprocessor.process_URL(url)
+        preprocessed_url = preprocessed_url.reshape(1, 200, 1) # Reshape the data for the model
 
         # Make predictions using the pre-trained model
-        prediction = model.predict(preprocessed_url)
+        prediction = model.predict(preprocessed_url, batch_size=1)
 
         # Convert predicted probabilities to binary labels
         prediction_binary = (np.array(prediction) > 0.5).astype(int)
