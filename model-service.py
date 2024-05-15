@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flasgger import Swagger
 import gdown
 from joblib import load
 import numpy as np
@@ -6,6 +7,7 @@ import importlib
 pre_process = importlib.import_module('lib-ml.pre_process')
 
 app = Flask(__name__)
+swagger = Swagger(app, template_file="swagger.yml")
 
 # Function to fetch the pre-trained model
 def fetch_model():
@@ -47,7 +49,7 @@ preprocessor = fetch_preprocessing()
 @app.route('/predict', methods=['POST'])
 def predict():
     """
-    Endpoint for making predictions
+    Make prediction based on the URL provided
     """
     # Get the URL from the request
     url = request.json["url"]
