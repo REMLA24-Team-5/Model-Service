@@ -1,0 +1,46 @@
+swagger: '2.0'
+info:
+  title: URL Prediction API
+  description: API for predicting whether a URL is Phishing or Legitimate
+  version: "0.1.1"
+host: "localhost:5000"
+schemes:
+  - "http"
+paths:
+  /predict:
+    post:
+      tags:
+        - Prediction
+      description: Endpoint for making predictions whether a URL is Phishing or Legitimate
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: url
+          description: URL to be classified
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+                example: "http://example.com"
+      responses:
+        200:
+          description: Prediction result
+          schema:
+            type: object
+            properties:
+              prediction:
+                type: string
+                example: "Phishing"
+        400:
+          description: No URL found in the request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "No URL found in the request"
