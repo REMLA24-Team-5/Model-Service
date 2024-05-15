@@ -69,3 +69,4 @@ def predict():
             return jsonify({"prediction": "Legitimate"})
     else:
         return jsonify({"error": "No URL found in the request"})
+
