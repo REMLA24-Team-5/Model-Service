@@ -3,7 +3,7 @@ info:
   title: URL Prediction API
   description: API for predicting whether a URL is Phishing or Legitimate
   version: "0.1.1"
-host: "localhost:5000"
+host: "localhost:8000"
 schemes:
   - "http"
 paths:
