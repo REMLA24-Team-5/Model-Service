@@ -9,7 +9,7 @@ The model-service is used in an app frontend, which can be ran using the `compos
 
 ```
 docker build -t <tag> .
-docker run -it --rm <tag>
+docker run -it --rm -p8000:8000 <tag>
 ```
 or run the `model-service.py` by first creating an environment
 ```
@@ -20,5 +20,6 @@ pip install -r requirements.txt
 and then running the Flask app.
 ```
 export FLASK_APP=model-service.py
+export FLASK_RUN_PORT=8000
 flask run
 ```
