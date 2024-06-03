@@ -15,7 +15,7 @@ def fetch_model():
     """
     Fetches the pre-trained model from Google Drive
     """
-    model_folder = "resources"
+    model_folder = "/resources"
     output = 'model.joblib'
     model = load(os.path.join(model_folder, output))
     return model
@@ -25,14 +25,14 @@ def fetch_preprocessing():
     Fetches the pre-processing module from Google Drive
     """
     
-    train = [line.strip() for line in open('resources/train.txt', "r", encoding="utf-8").readlines()[1:]]
+    train = [line.strip() for line in open('/resources/train.txt', "r", encoding="utf-8").readlines()[1:]]
     raw_x_train = [line.split("\t")[1] for line in train]
     raw_y_train = [line.split("\t")[0] for line in train]
 
-    test = [line.strip() for line in open('resources/test.txt', "r", encoding="utf-8").readlines()]
+    test = [line.strip() for line in open('/resources/test.txt', "r", encoding="utf-8").readlines()]
     raw_x_test = [line.split("\t")[1] for line in test]
 
-    val=[line.strip() for line in open('resources/val.txt', "r", encoding="utf-8").readlines()]
+    val=[line.strip() for line in open('/resources/val.txt', "r", encoding="utf-8").readlines()]
     raw_x_val=[line.split("\t")[1] for line in val]
 
     preprocessor = pre_process.Preprocessing(raw_x_train, raw_y_train, raw_x_test, raw_x_val)
@@ -40,8 +40,8 @@ def fetch_preprocessing():
     return preprocessor
 
 # Load the pre-trained model
-model = fetch_model()
-preprocessor = fetch_preprocessing()
+#model = fetch_model()
+#preprocessor = fetch_preprocessing()
 
 # Define a route for making predictions
 @app.route('/predict', methods=['POST'])
