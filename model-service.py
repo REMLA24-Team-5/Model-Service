@@ -40,8 +40,8 @@ def fetch_preprocessing():
     return preprocessor
 
 # Load the pre-trained model
-#model = fetch_model()
-#preprocessor = fetch_preprocessing()
+model = fetch_model()
+preprocessor = fetch_preprocessing()
 
 # Define a route for making predictions
 @app.route('/predict', methods=['POST'])
