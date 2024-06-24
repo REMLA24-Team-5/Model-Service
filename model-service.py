@@ -1,7 +1,6 @@
 import os
 from flask import Flask, request, jsonify
 from flasgger import Swagger
-import gdown
 from joblib import load
 import numpy as np
 import importlib
@@ -16,7 +15,7 @@ def fetch_model():
     Fetches the pre-trained model from Google Drive
     """
     model_folder = "/home/resources"
-    output = 'model.joblib'
+    output = 'model-v1.joblib'
     model = load(os.path.join(model_folder, output))
     return model
 
