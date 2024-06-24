@@ -1,7 +1,6 @@
 import os
 from flask import Flask, request, jsonify
 from flasgger import Swagger
-import gdown
 from joblib import load
 import numpy as np
 import importlib
