@@ -4,4 +4,5 @@ numpy==1.26.4
 joblib==1.4.0
 keras==2.15.0
 tensorflow==2.15.0
+prometheus-client==0.20.0
 lib-ml @ git+https://github.com/REMLA24-Team-5/lib-ml@v0.1.1
