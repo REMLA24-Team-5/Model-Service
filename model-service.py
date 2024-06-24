@@ -15,7 +15,7 @@ def fetch_model():
     Fetches the pre-trained model from Google Drive
     """
     model_folder = "/home/resources"
-    output = 'model-v1.joblib'
+    output = 'model-v2.joblib'
     model = load(os.path.join(model_folder, output))
     return model
 
