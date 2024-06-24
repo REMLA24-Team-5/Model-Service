@@ -4,10 +4,15 @@ from flasgger import Swagger
 from joblib import load
 import numpy as np
 import importlib
+from prometheus_client import Counter, Gauge, generate_latest, CONTENT_TYPE_LATEST
 pre_process = importlib.import_module('lib-ml.pre_process')
 
 app = Flask(__name__)
 swagger = Swagger(app, template_file="swagger.yml")
+
+REQUEST_COUNT_TO_MODEL = Counter('requests_to_model', 'Number of requests to the model')
+MODEL_PHISHING_COUNT = Counter('model_phishing_detection', 'The number of URLs detected as phishing by the model')
+MODEL_PHISHING_RATE = Gauge('model_phishing_rate', 'The percentage of URLs detected as phishing out of the total URLs checked by the model')
 
 # Function to fetch the pre-trained model
 def fetch_model():
@@ -15,7 +20,7 @@ def fetch_model():
     Fetches the pre-trained model from Google Drive
     """
     model_folder = "/home/resources"
-    output = 'model-v2.joblib'
+    output = 'model-v1.joblib'
     model = load(os.path.join(model_folder, output))
     return model
 
@@ -50,6 +55,7 @@ def predict():
     """
     # Get the URL from the request
     url = request.json["url"]
+    REQUEST_COUNT_TO_MODEL.inc()
 
     if url:
         # Pre-process the data using lib-ml
@@ -63,9 +69,16 @@ def predict():
         prediction_binary = (np.array(prediction) > 0.5).astype(int)
 
         if prediction_binary == 1:
+            MODEL_PHISHING_COUNT.inc()
+            model_request_count = REQUEST_COUNT_TO_MODEL._value.get()
+            if model_request_count > 0:
+                MODEL_PHISHING_RATE.set((MODEL_PHISHING_COUNT._value.get() / model_request_count) * 100)
             return jsonify({"prediction": "Phishing"})
         else:
             return jsonify({"prediction": "Legitimate"})
     else:
         return jsonify({"error": "No URL found in the request"})
 
+@app.route('/metrics')
+def metrics():
+    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
